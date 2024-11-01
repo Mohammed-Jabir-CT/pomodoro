@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pomodoro</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/daisyui@4.12.14/dist/full.min.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+
+  <body class="font-mono tracking-tight text-center flex flex-col h-screen">
+    <main class="flex flex-col items-center justify-center grow">
+      <h2 id="info" class="text-xl p-2">Pomodoro</h2>
+      <div class="border rounded-box shadow-2xl p-4 flex flex-col gap-3">
+        <div class="collapse collapse-plus bg-base-200">
+          <input type="checkbox" name="my-accordion-3" />
+          <div class="collapse-title font-medium">Edit</div>
+          <div class="collapse-content">
+            <div>
+              <label for="count" class="text-xs">Count: </label>
+              <div class="join">
+                <input
+                  id="count"
+                  class="input input-bordered input-xs join-item"
+                  type="number"
+                  min="1"
+                  max="8"
+                  value="1"
+                />
+                <span class="btn btn-xs join-item">times</span>
+              </div>
+            </div>
+            <div>
+              <label for="focus" class="text-xs">Focus: </label>
+              <div class="join">
+                <input
+                  id="focus"
+                  class="input input-bordered input-xs join-item"
+                  type="number"
+                  min="1"
+                  max="59"
+                  value="25"
+                />
+                <span class="btn btn-xs join-item">mins</span>
+              </div>
+            </div>
+            <div>
+              <label for="break" class="text-xs">Break: </label>
+              <div class="join">
+                <input
+                  id="break"
+                  class="input input-bordered input-xs join-item"
+                  type="number"
+                  min="1"
+                  max="59"
+                  value="10"
+                />
+                <span class="btn btn-xs join-item">mins</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div id="count-down" class="rounded-box p-6 bg-slate-200 text-5xl">
+          00:00
+        </div>
+        <div id="actions">
+          <button class="btn btn-sm bg-green-200" id="start" onclick="start()">
+            Start
+          </button>
+          <button class="btn btn-sm bg-red-200" id="stop-and-resume" onclick="stopAndResume(event)">
+            Stop
+          </button>
+          <button class="btn btn-sm bg-blue-200" id="reset" onclick="reset()">
+            Reset
+          </button>
+        </div>
+      </div>
+    </main>
+    <script src="script.js"></script>
+  </body>
+</html>
