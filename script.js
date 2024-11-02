@@ -3,28 +3,36 @@ let isRunning = false;
 let focusTime;
 let breakTime;
 let time;
+let count;
+let flag;
 
 const start = () => {
 
     document.getElementById('start').disabled = true;
     if (isRunning) return;
 
-    let cnt = document.getElementById("count").value;
-    focusTime = document.getElementById("focus").value;
-    breakTime = document.getElementById("break").value;
-    console.log('init:', cnt);
+    count = document.getElementById("count").value;
+    focusTime = document.getElementById("focus").value * 60;
+    breakTime = document.getElementById("break").value * 60;
+    console.log('init:', count);
 
-    if (cnt > 8) {
+    if (count > 8) {
         alert("Please enter a number between 1 and 8.");
         document.getElementById("count").value = "";
         return;
     }
     isRunning = true;
-    startPomodoro(cnt);
+    time = focusTime;
+    startPomodoro();
 };
 
-function startPomodoro(cnt) {
-    time = focusTime
+function startPomodoro() {
+    flag = 0;
+    if (isRunning == true) {
+        time = focusTime;
+    } else {
+        isRunning = true;
+    }
 
     document.getElementById('info').innerText = "Focus";
 
@@ -37,10 +45,11 @@ function startPomodoro(cnt) {
         time--;
         if (time < 0) {
             clearInterval(interval);
-            cnt -= 1;
-            console.log('sent: ', cnt);
-            if (cnt > 0) {
-                setBreak(cnt);
+            count--;
+            console.log('sent: ', count);
+            if (count > 0) {
+                time = breakTime;
+                setBreak(count);
             } else {
                 document.getElementById('start').disabled = false;
                 document.getElementById('info').innerText = "Pomodoro";
@@ -50,9 +59,13 @@ function startPomodoro(cnt) {
     }, 1000);
 }
 
-function setBreak(cnt) {
-
-    time = breakTime;
+function setBreak() {
+    flag = 1;
+    if(isRunning == true){
+        time = breakTime;
+    } else {
+        isRunning = true;
+    }
 
     document.getElementById('info').innerText = "Break";
 
@@ -65,24 +78,38 @@ function setBreak(cnt) {
         time--;
         if (time < 0) {
             clearInterval(interval);
-            console.log('received: ', cnt);
-            startPomodoro(focusTime, cnt);
+            console.log('received: ', count);
+            startPomodoro();
         }
     }, 1000);
 }
 
 const stopAndResume = () => {
-    let status = document.getElementById("stop-and-resume").innerText;
+    let element = document.getElementById("stop-and-resume")
+    let status = element.innerText;
     console.log(time);
-    if(status == "Stop"){
+    if (status == "Stop") {
+        isRunning = false;
         clearInterval(interval);
-        isRunning = false;    
-    } else{
-        
+        element.innerText = "Resume";
+        element.classList.add('bg-yellow-200');
+        element.classList.remove('bg-red-200');
+    } else {
+        element.innerText = "Stop";
+        element.classList.add('bg-red-200');
+        element.classList.remove('bg-yellow-200');
+
+        if(!flag){
+            startPomodoro();
+        } else {
+            setBreak();
+        }
     }
 }
 
 const reset = () => {
+    clearInterval(interval);
+    isRunning = false;
     document.getElementById("count-down").innerText = "00:00";
     document.getElementById('start').disabled = false;
 }
